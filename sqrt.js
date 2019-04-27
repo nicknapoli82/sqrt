@@ -7,8 +7,6 @@
 
 function sqrt(number, decimalPlaces = 10) {
     // Validate number, if NaN, 'undefined', 0 => return null
-    //                  if number is < 2       => return null
-    //                  if number is < 4, fix special case => return null
     if (number === 1) return '1 silly';
     if (!number || number <= 0) return null;
     
