@@ -56,9 +56,9 @@ function sqrt(number, decimalPlaces = 10) {
 
 	guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
 
-	console.log("guess = ", guess);
-	console.log(bounds);
-	console.log();
+	// console.log("guess = ", guess);
+	// console.log(bounds);
+	// console.log();
     }
 
     let result;
