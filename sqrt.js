@@ -9,7 +9,7 @@
 // this is due to the fact that numbers lower than 4 breaks this algorithm
 // I have a fix, just have implemented it yet.
 
-function sqrt(number, decimalPlaces = 0) {
+function sqrt(number, decimalPlaces = 10) {
     // On object to contain bounds, and string representation of bound numbers
     // Strings are turnicated to decimalPlaces after dot
     const bounds = { upper: 0, lower: 0, upperStr: "l", lowerStr: "" };
@@ -17,6 +17,7 @@ function sqrt(number, decimalPlaces = 0) {
     // Initial guess can be refined to be more accurate
     // This is rough for now, Number of Div by 2 determined by digits in number
     let guess = number >> placesFromDot(number);
+    let lastGuess;
 //    let pctDeviation = number / (guess * guess);
     bounds.upper = guess;
     bounds.lower = 0;
@@ -33,7 +34,10 @@ function sqrt(number, decimalPlaces = 0) {
     if (number === 1) return '1 silly';
     if (!number || number < 4) return null;
     
-    while (bounds.upperStr != bounds.lowerStr && guess * guess !== number) {
+    while ((bounds.upperStr != bounds.lowerStr) &&
+	   (guess * guess !== number) && lastGuess !== guess) {
+
+	lastGuess = guess;
 	  
 	if ((guess *guess) > number) {
 	    bounds.upper = guess;
@@ -46,11 +50,10 @@ function sqrt(number, decimalPlaces = 0) {
 	bounds.lowerStr = stringify(bounds.lower);
 
 	guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
-	
-	// console.log("guess = ", guess);
-	// console.log("pctDeviation = ", pctDeviation);
-	// console.log(bounds);
-	// console.log();
+
+	console.log("guess = ", guess);
+	console.log(bounds);
+	console.log();
     }
 
     let result = bounds.upper - ((bounds.upper - bounds.lower) / 2);
@@ -70,4 +73,4 @@ function placesFromDot(n, side) {
     else return nStr.slice(dot + 1).length;
 }
 
-console.log(sqrt(188, 7));
+console.log(sqrt(10000000));
