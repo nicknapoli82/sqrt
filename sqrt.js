@@ -5,8 +5,8 @@
 // From first guess divide and conquer
 //     Based on narrowing between upper and lower bound
 
-// For now this will only allow checking number greater or equal to 4
-// this is due to the fact that numbers lower than 4 breaks this algorithm
+// For now this will only allow checking number greater or equal to 1
+// this is due to the fact that numbers lower than 1 breaks this algorithm
 // I have a fix, just have implemented it yet.
 
 function sqrt(number, decimalPlaces = 10) {
@@ -22,24 +22,30 @@ function sqrt(number, decimalPlaces = 10) {
     bounds.upper = guess;
     bounds.lower = 0;
     guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
+
+    // Let try to fix a special case
+    if (number > 0 && number < 4) {
+	bounds.upper = number;
+	guess = number / 2;
+    }
     
     // Simple function to determine upperstr and lowerStr
     const stringify = function (b) {
-	return b.toString().slice(0, placesFromDot(b, 'LHS') + decimalPlaces + 1);
+	if (decimalPlaces) return b.toString().slice(0, placesFromDot(b, 'LHS') + decimalPlaces + 1);
+	return b.toString().slice(0, placesFromDot(b, 'LHS'));
     };
 
     // Validate number, if NaN, 'undefined', 0 => return null
     //                  if number is < 2       => return null
     //                  if number is < 4, fix special case => return null
     if (number === 1) return '1 silly';
-    if (!number || number < 4) return null;
+    if (!number || number <= 0) return null;
     
-    while ((bounds.upperStr != bounds.lowerStr) &&
-	   (guess * guess !== number) && lastGuess !== guess) {
+    while ((guess * guess !== number) && lastGuess !== guess) {
 
 	lastGuess = guess;
 	  
-	if ((guess *guess) > number) {
+	if ((guess * guess) > number) {
 	    bounds.upper = guess;
 	}
 	else if ((guess * guess) < number) {
@@ -73,4 +79,4 @@ function placesFromDot(n, side) {
     else return nStr.slice(dot + 1).length;
 }
 
-console.log(sqrt(10000000));
+console.log(sqrt(2, 1));
