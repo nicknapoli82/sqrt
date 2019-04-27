@@ -17,7 +17,7 @@ function sqrt(number, decimalPlaces = 0) {
     // Initial guess can be refined to be more accurate
     // This is rough for now, Number of Div by 2 determined by digits in number
     let guess = number >> placesFromDot(number);
-    let pctDeviation = number / (guess * guess);
+//    let pctDeviation = number / (guess * guess);
     bounds.upper = guess;
     bounds.lower = 0;
     guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
@@ -36,18 +36,16 @@ function sqrt(number, decimalPlaces = 0) {
     while (bounds.upperStr != bounds.lowerStr && guess * guess !== number) {
 	  
 	if ((guess *guess) > number) {
-	    bounds.upper -= ((bounds.upper - bounds.lower) / 2) * pctDeviation;
+	    bounds.upper = guess;
 	}
 	else if ((guess * guess) < number) {
-	    bounds.lower += ((bounds.upper - bounds.lower) / 2) * pctDeviation;
+	    bounds.lower = guess;
 	}
 
 	bounds.upperStr = stringify(bounds.upper);
 	bounds.lowerStr = stringify(bounds.lower);
 
 	guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
-	pctDeviation = number / (guess * guess);
-	if (pctDeviation > 1) pctDeviation = (guess * guess) / number;
 	
 	// console.log("guess = ", guess);
 	// console.log("pctDeviation = ", pctDeviation);
