@@ -5,10 +5,6 @@
 // From first guess divide and conquer
 //     Based on narrowing between upper and lower bound
 
-// For now this will only allow checking number greater or equal to 1
-// this is due to the fact that numbers lower than 1 breaks this algorithm
-// I have a fix, just have implemented it yet.
-
 function sqrt(number, decimalPlaces = 10) {
     // Validate number, if NaN, 'undefined', 0 => return null
     //                  if number is < 2       => return null
