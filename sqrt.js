@@ -10,23 +10,37 @@
 // I have a fix, just have implemented it yet.
 
 function sqrt(number, decimalPlaces = 10) {
+    // Validate number, if NaN, 'undefined', 0 => return null
+    //                  if number is < 2       => return null
+    //                  if number is < 4, fix special case => return null
+    if (number === 1) return '1 silly';
+    if (!number || number <= 0) return null;
+    
     // On object to contain bounds, and string representation of bound numbers
     // Strings are turnicated to decimalPlaces after dot
-    const bounds = { upper: 0, lower: 0, upperStr: "l", lowerStr: "" };
+    const bounds = { upper: 0, lower: 0 };
     
     // Initial guess can be refined to be more accurate
     // This is rough for now, Number of Div by 2 determined by digits in number
     let guess = number >> placesFromDot(number);
     let lastGuess;
-//    let pctDeviation = number / (guess * guess);
     bounds.upper = guess;
     bounds.lower = 0;
     guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
 
-    // Let try to fix a special case
+    // Fix special case where number is >= 10 or < 16 because it happens
+    if (number >= 10 || number < 16) bounds.upper = number;
+    
+    // Fix special case where number >> becomes 0 or unusable
     if (number > 0 && number < 4) {
 	bounds.upper = number;
 	guess = number / 2;
+    }
+    
+    // Fix special case where number is > 0 and < 1
+    if (number < 1) {
+	bounds.upper = 1;
+	guess = 0.5;
     }
     
     // Simple function to determine upperstr and lowerStr
@@ -34,12 +48,6 @@ function sqrt(number, decimalPlaces = 10) {
 	if (decimalPlaces) return b.toString().slice(0, placesFromDot(b, 'LHS') + decimalPlaces + 1);
 	return b.toString().slice(0, placesFromDot(b, 'LHS'));
     };
-
-    // Validate number, if NaN, 'undefined', 0 => return null
-    //                  if number is < 2       => return null
-    //                  if number is < 4, fix special case => return null
-    if (number === 1) return '1 silly';
-    if (!number || number <= 0) return null;
     
     while ((guess * guess !== number) && lastGuess !== guess) {
 
@@ -52,9 +60,6 @@ function sqrt(number, decimalPlaces = 10) {
 	    bounds.lower = guess;
 	}
 
-	bounds.upperStr = stringify(bounds.upper);
-	bounds.lowerStr = stringify(bounds.lower);
-
 	guess = bounds.upper - ((bounds.upper - bounds.lower) / 2);
 
 	console.log("guess = ", guess);
@@ -62,7 +67,8 @@ function sqrt(number, decimalPlaces = 10) {
 	console.log();
     }
 
-    let result = bounds.upper - ((bounds.upper - bounds.lower) / 2);
+    let result;
+    result = bounds.upper - ((bounds.upper - bounds.lower) / 2);
     
     return [guess, stringify(result)];
 }
@@ -79,4 +85,4 @@ function placesFromDot(n, side) {
     else return nStr.slice(dot + 1).length;
 }
 
-console.log(sqrt(2, 1));
+console.log(sqrt(0.3, 5));
