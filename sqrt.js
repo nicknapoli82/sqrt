@@ -8,7 +8,10 @@
 function sqrt(number, decimalPlaces = 10) {
     // Validate number, if NaN, 'undefined', 0 => return null
     if (number === 1) return '1 silly';
-    if (!number || number <= 0) return null;
+    if (!number || number <= 0) {
+	if (number === 0) return 0;
+	return null;
+    }
     
     // On object to contain bounds, and string representation of bound numbers
     // Strings are turnicated to decimalPlaces after dot
@@ -79,4 +82,8 @@ function placesFromDot(n, side) {
     else return nStr.slice(dot + 1).length;
 }
 
-console.log(sqrt(0.3, 5));
+for (let i = 0; i < 1000000; i+=0.1) {
+//    console.log("sqrt(", i, ")");
+    //    console.log(sqrt(i, 5));
+    sqrt(i,5);
+}
